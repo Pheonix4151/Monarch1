@@ -7,6 +7,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
+    width :'auto',
+    // height: 'contentHeight',
+    alignSelf:'flex'
   },
   logo: {
     width: 150, // Adjust size as needed
@@ -70,6 +73,11 @@ const styles = StyleSheet.create({
   },
   signInButtonText: {
     color: '#666',
+  },
+  gradientContainer: {
+    flex: 1, // Important: Makes the gradient fill the screen
+    justifyContent: 'center', // Centers content vertically
+    alignItems: 'center', // Centers content horizontally
   },
 });
 

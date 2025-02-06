@@ -4,7 +4,7 @@ import styles from '../styles/authStyles';
 
 const RegisterScreen = () => {
   return (
-    <View style={styles.container}>
+    <View style={styles.container} backgroundColor="red">
       <Text style={styles.title}>REGISTER</Text>
 
       <View style={styles.inputContainer}>

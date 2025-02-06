@@ -17,18 +17,11 @@
     "expo": "~52.0.30",
     "expo-status-bar": "~2.0.1",
     "react": "18.3.1",
-<<<<<<< HEAD
-    "react-native": "0.76.6",
-    "react-native-paper": "^5.13.1",
-    "react-native-safe-area-context": "^5.2.0",
-    "react-native-vector-icons": "^10.2.0"
-=======
     "react-dom": "18.3.1",
     "react-native": "0.76.6",
     "react-native-safe-area-context": "^5.2.0",
     "react-native-screens": "^4.6.0",
     "react-native-web": "~0.19.13"
->>>>>>> 064c40ff5fca8d20d4b63a49e0c8a93a375f2b2e
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
