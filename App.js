@@ -7,6 +7,7 @@ import JobProviderDashboard from './src/screens/JobProviderDashboard';
 import JobProviderProfile from './src/screens/JobProviderProfile';
 import PaperProviderComponentr from './src/screens/PaperProvider';
 import PaperProviderComponent from './src/screens/PaperProvider';
+import JobseekerDashboard from './src/screens/JobseekerDashboard';
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
       {/* <JobProviderProfile/> */}
       {/* <RegisterScreen/> */}
       {/* <PaperProviderComponent/> */}
+      <JobseekerDashboard/>
       <StatusBar style="auto" />
     </View>
   );
