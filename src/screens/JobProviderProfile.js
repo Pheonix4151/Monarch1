@@ -1,6 +1,7 @@
-import * as React from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { PaperProvider, Card, Button } from 'react-native-paper';
+import React from 'react';
+import { View, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import { Provider as PaperProvider, Card, Button, TextInput, Avatar } from 'react-native-paper';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 // Placeholder data for the profile
 const initialProfileData = {
@@ -10,6 +11,7 @@ const initialProfileData = {
   companyName: 'Tech Solutions Ltd.',
   companyLocation: 'New York, USA',
   verified: false,
+  avatarUri: 'https://fastly.picsum.photos/id/1005/200/200.jpg?hmac=Kf5Y5Y5Y5Y5Y5Y5Y5Y5Y5Y5Y5Y5Y5Y5Y5Y5Y5Y5Y5Y5',
 };
 
 const JobProviderProfile = () => {
@@ -17,7 +19,7 @@ const JobProviderProfile = () => {
 
   // Handle updating profile fields
   const handleInputChange = (field, value) => {
-    setProfileData(prevState => ({
+    setProfileData((prevState) => ({
       ...prevState,
       [field]: value,
     }));
@@ -26,7 +28,7 @@ const JobProviderProfile = () => {
   // Handle profile verification
   const handleVerification = () => {
     Alert.alert('Verification', 'Your profile has been verified!');
-    setProfileData(prevState => ({
+    setProfileData((prevState) => ({
       ...prevState,
       verified: true,
     }));
@@ -38,20 +40,56 @@ const JobProviderProfile = () => {
     // In a real app, you would save the updated data to the backend here
   };
 
+  // Handle avatar change
+  const handleAvatarChange = () => {
+    Alert.alert(
+      'Change Profile Picture',
+      'Are you sure you want to change your profile picture?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: () => pickImage(),
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
+  // Function to pick image from gallery
+  const pickImage = async () => {
+    const result = await launchImageLibrary({
+      mediaType: 'photo',
+      quality: 1,
+    });
+
+    if (result.assets && result.assets.length > 0) {
+      const selectedImage = result.assets[0];
+      setProfileData((prevState) => ({
+        ...prevState,
+        avatarUri: selectedImage.uri,
+      }));
+    }
+  };
+
   return (
     <PaperProvider>
       <View style={styles.container}>
-        <Text style={styles.title}>Job Provider Profile</Text>
-
-        {/* Profile Information Section */}
-        <Card style={styles.card}>
-          <Card.Title title="Profile Information" subtitle="View and update your details" />
-          <Card.Content>
+        {/* Profile Header */}
+        <View style={styles.header}>
+          <TouchableOpacity onPress={handleAvatarChange}>
+            <Avatar.Image size={100} source={{ uri: profileData.avatarUri }} />
+          </TouchableOpacity>
+          <View style={styles.headerText}>
             <TextInput
               label="Full Name"
               value={profileData.name}
               onChangeText={(value) => handleInputChange('name', value)}
               style={styles.input}
+              mode="outlined"
             />
             <TextInput
               label="Email"
@@ -59,39 +97,47 @@ const JobProviderProfile = () => {
               onChangeText={(value) => handleInputChange('email', value)}
               style={styles.input}
               keyboardType="email-address"
+              mode="outlined"
             />
+          </View>
+        </View>
+
+        {/* Profile Information Section */}
+        <Card style={styles.card}>
+          <Card.Title title="Contact Information" />
+          <Card.Content>
             <TextInput
               label="Phone"
               value={profileData.phone}
               onChangeText={(value) => handleInputChange('phone', value)}
               style={styles.input}
               keyboardType="phone-pad"
+              mode="outlined"
             />
             <TextInput
               label="Company Name"
               value={profileData.companyName}
               onChangeText={(value) => handleInputChange('companyName', value)}
               style={styles.input}
+              mode="outlined"
             />
             <TextInput
               label="Company Location"
               value={profileData.companyLocation}
               onChangeText={(value) => handleInputChange('companyLocation', value)}
               style={styles.input}
+              mode="outlined"
             />
           </Card.Content>
         </Card>
 
         {/* Verification Section */}
         <Card style={styles.card}>
-          <Card.Title title="Verification Status" subtitle="Verify your account details" />
+          <Card.Title title="Verification Status" />
           <Card.Content>
             <View style={styles.verificationContainer}>
-              <Text style={styles.verificationText}>
-                {profileData.verified ? 'Verified' : 'Not Verified'}
-              </Text>
               <Button
-                mode="contained"
+                mode={profileData.verified ? 'contained' : 'outlined'}
                 onPress={handleVerification}
                 disabled={profileData.verified}
                 style={styles.verifyButton}
@@ -103,7 +149,12 @@ const JobProviderProfile = () => {
         </Card>
 
         {/* Update Profile Button */}
-        <Button mode="contained" onPress={handleUpdateProfile} style={styles.updateButton}>
+        <Button
+          mode="contained"
+          onPress={handleUpdateProfile}
+          style={styles.updateButton}
+          contentStyle={styles.buttonContent}
+        >
           Update Profile
         </Button>
       </View>
@@ -115,15 +166,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: '#f5f5f5',
+    marginTop: 25,
   },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 20,
-    textAlign: 'center',
+  },
+  headerText: {
+    marginLeft: 20,
+    flex: 1,
   },
   card: {
     marginBottom: 20,
+    borderRadius: 10,
+    elevation: 3,
   },
   input: {
     marginBottom: 10,
@@ -132,17 +190,17 @@ const styles = StyleSheet.create({
   verificationContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  verificationText: {
-    fontSize: 16,
-    fontWeight: 'bold',
+    justifyContent: 'center',
   },
   verifyButton: {
-    marginLeft: 10,
+    marginTop: 10,
   },
   updateButton: {
     marginTop: 20,
+    borderRadius: 25,
+  },
+  buttonContent: {
+    paddingVertical: 8,
   },
 });
 

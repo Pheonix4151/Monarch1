@@ -12,16 +12,14 @@ const leftComponent = ({ size }) => (
   />
 );
 
-const PaperProviderComponent = () => {
+const PaperProviderComponent = ({ navigation }) => {
   return (
     <PaperProvider>
       <View style={{ flex: 1, justifyContent: 'center', paddingVertical: 20 }}>
-        <Card style={{ margin: 20 }}>
+        <Card style={{ margin: 20 }} onPress={() => navigation.navigate('LoginScreen')}>
           <Card.Title
             title="Job Provider"
-            // subtitle="Card Subtitle"
             titleStyle={{ fontSize: 18, fontWeight: 'bold' }}
-            subtitleStyle={{ fontSize: 14 }}
             left={leftComponent}
           />
           <Card.Cover
@@ -32,12 +30,10 @@ const PaperProviderComponent = () => {
           />
         </Card>
 
-        <Card style={{ margin: 20 }}>
+        <Card style={{ margin: 20 }} onPress={() => navigation.navigate('LoginScreen')}>
           <Card.Title
             title="Job Seeker"
-            // subtitle="Card Subtitle"
             titleStyle={{ fontSize: 18, fontWeight: 'bold' }}
-            subtitleStyle={{ fontSize: 14 }}
             left={leftComponent}
           />
           <Card.Cover
